@@ -1,10 +1,17 @@
+import * as React from 'react';
 
+interface Props {
+  show: boolean;
+  onClick: React.MouseEventHandler;
+}
 
-const Backdrop = () => {
+const Backdrop: React.FC<Props> = ({show, onClick}) => {
   return (
-    <div>
-
-    </div>
+    <div
+      onClick={onClick}
+      className="modal-backdrop show"
+      style={{display: show ? 'block' : 'none'}}
+    />
   );
 };
 
