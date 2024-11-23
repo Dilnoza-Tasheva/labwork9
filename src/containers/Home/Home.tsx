@@ -57,8 +57,11 @@ const Home = () => {
   };
 
   const deleteTransaction = async(transactionId: string) => {
-    await dispatch(deleteOneTransaction(transactionId));
-    dispatch(fetchAllTransactions());
+    const confirmed = window.confirm('Are you sure you want to delete this?');
+    if (confirmed) {
+      await dispatch(deleteOneTransaction(transactionId));
+      dispatch(fetchAllTransactions());
+    }
   };
 
   const showEditModal = (transaction: ITransaction) => {
@@ -73,10 +76,18 @@ const Home = () => {
     navigate('/');
   };
 
+  const totalAmount = transactions.reduce((acc, transaction) => {
+    const category = categories.find((c) => c.id === transaction.categoryId);
+    if (!category) return acc;
+
+    return acc + (transaction.type === 'income' ? transaction.amount: - transaction.amount);
+  }, 0);
+
   return (
     <>
       <div className="d-flex justify-content-between align-items-center">
         <h5>Transactions</h5>
+        <span>Total: {totalAmount} KGS</span>
       </div>
 
       {isFetchLoading ? (
@@ -84,6 +95,10 @@ const Home = () => {
       ) : (
         <ul className="list-group mt-3">
           {transactions
+            .filter(transaction => {
+              const categoryIds = categories.map(category => category.id);
+              return categoryIds.includes(transaction.categoryId);
+            })
             .slice()
             .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
             .map((transaction) => {
@@ -99,8 +114,8 @@ const Home = () => {
                     <span>{transaction.amount !== undefined ?  transaction.amount : 'No amount'}</span>
                   </div>
                   <div>
-                    <button onClick={() => showEditModal(transaction)}>Edit</button>
-                    <button onClick={() => deleteTransaction(transaction.id)}>Delete</button>
+                    <button onClick={() => showEditModal(transaction)} className="btn btn-sm btn-outline-success me-2">Edit</button>
+                    <button onClick={() => deleteTransaction(transaction.id)} className="btn btn-sm btn-outline-danger">Delete</button>
                   </div>
                 </li>
               );

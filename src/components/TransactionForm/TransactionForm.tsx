@@ -42,7 +42,11 @@ const TransactionForm: React.FC<Props> = ({ addNewTransaction, existingTransacti
     }
 
     const createdAt = new Date().toISOString();
-    addNewTransaction({...newTransaction, createdAt});
+    addNewTransaction({
+      ...newTransaction,
+      createdAt,
+      amount: Number(newTransaction.amount)
+    });
   };
   return (
     <>

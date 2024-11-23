@@ -44,8 +44,12 @@ const Categories = () => {
   };
 
   const deleteCategory = async(categoryId: string) => {
-    await dispatch(deleteOneCategory(categoryId));
-    dispatch(fetchAllCategories());
+    const confirmed = window.confirm('Are you sure you want to delete this?');
+    if (confirmed) {
+      await dispatch(deleteOneCategory(categoryId));
+      dispatch(fetchAllCategories());
+    }
+
   };
 
   const showEditModal = (category: ICategory) => {
