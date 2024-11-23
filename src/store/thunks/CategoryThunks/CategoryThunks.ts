@@ -35,14 +35,6 @@ export const deleteOneCategory = createAsyncThunk<void, string>(
   }
 );
 
-export const getOneCategoryById = createAsyncThunk<ICategoryMutation | null, string>(
-  'pizzas/getOnePizzaById',
-  async (categoryId) => {
-    const response = await axiosApi<ICategoryMutation | null>(`pizzas/${categoryId}.json`);
-    if (!response.data) return null;
-    return response.data;
-  }
-);
 
 export const editCategory = createAsyncThunk<void, {categoryId: string; category: ICategoryMutation}>(
   'categories/editCategory',

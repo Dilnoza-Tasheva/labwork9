@@ -1,10 +1,9 @@
 import { ICategory, ICategoryMutation } from '../../../types';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice,  } from '@reduxjs/toolkit';
 import {
   createCategory,
   deleteOneCategory, editCategory,
   fetchAllCategories,
-  getOneCategoryById
 } from '../../thunks/CategoryThunks/CategoryThunks.ts';
 import { RootState } from '../../../app/store.ts';
 
@@ -28,7 +27,6 @@ const initialState: CategoryState = {
 
 export const selectFetchCategoriesLoading = (state: RootState) => state.categories.isFetchLoading;
 export const selectCategories = (state: RootState) => state.categories.categories;
-export const selectOneCategory = (state: RootState) => state.categories.oneCategory;
 
 export const categorySlice = createSlice({
   name: 'categories',
@@ -63,17 +61,6 @@ export const categorySlice = createSlice({
       })
       .addCase(deleteOneCategory.rejected, (state) => {
         state.isDeleteLoading = false;
-      })
-      .addCase(getOneCategoryById.pending, (state) => {
-        state.isFetchLoading = true;
-        state.oneCategory = null;
-      })
-      .addCase(getOneCategoryById.fulfilled, (state, action: PayloadAction<ICategoryMutation | null>) => {
-        state.isFetchLoading = false;
-        state.oneCategory = action.payload;
-      })
-      .addCase(getOneCategoryById.rejected, (state) => {
-        state.isFetchLoading = false;
       })
       .addCase(editCategory.pending, (state) => {
         state.isEditLoading = true;
